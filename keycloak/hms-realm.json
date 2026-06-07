@@ -1,0 +1,113 @@
+{
+  "id": "hms-realm",
+  "realm": "hms-realm",
+  "displayName": "HMS System",
+  "enabled": true,
+  "registrationAllowed": false,
+  "loginWithEmailAllowed": true,
+  "duplicateEmailsAllowed": false,
+  "resetPasswordAllowed": false,
+  "editUsernameAllowed": false,
+  "bruteForceProtected": true,
+  "otpPolicyType": "totp",
+  "otpPolicyAlgorithm": "HmacSHA1",
+  "otpPolicyInitialCounter": 0,
+  "otpPolicyDigits": 6,
+  "otpPolicyLookAheadWindow": 1,
+  "otpPolicyPeriod": 30,
+  "roles": {
+    "realm": [
+      {
+        "name": "admin",
+        "description": "System Administrator"
+      },
+      {
+        "name": "doctor",
+        "description": "Medical Doctor"
+      },
+      {
+        "name": "nurse",
+        "description": "Registered Nurse"
+      },
+      {
+        "name": "receptionist",
+        "description": "Front Desk Receptionist"
+      }
+    ]
+  },
+  "users": [
+    {
+      "username": "admin",
+      "email": "admin@hospital.com",
+      "enabled": true,
+      "firstName": "Admin",
+      "lastName": "User",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "Admin123!"
+        }
+      ],
+      "realmRoles": [
+        "admin"
+      ],
+      "requiredActions": [
+        "CONFIGURE_TOTP"
+      ]
+    },
+    {
+      "username": "dr.chen",
+      "email": "m.chen@hospital.com",
+      "enabled": true,
+      "firstName": "Michael",
+      "lastName": "Chen",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "Doctor123!"
+        }
+      ],
+      "realmRoles": [
+        "doctor"
+      ],
+      "requiredActions": [
+        "CONFIGURE_TOTP"
+      ]
+    }
+  ],
+  "clients": [
+    {
+      "clientId": "hms-web",
+      "enabled": true,
+      "clientAuthenticatorType": "client-secret",
+      "secret": "hms-client-secret-123",
+      "redirectUris": [
+        "http://localhost:3000/*"
+      ],
+      "webOrigins": [
+        "http://localhost:3000"
+      ],
+      "standardFlowEnabled": true,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": true,
+      "publicClient": false,
+      "protocol": "openid-connect",
+      "protocolMappers": [
+        {
+          "name": "realm roles",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-realm-role-mapper",
+          "consentRequired": false,
+          "config": {
+            "multivalued": "true",
+            "userinfo.token.claim": "true",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "claim.name": "roles",
+            "jsonType.label": "String"
+          }
+        }
+      ]
+    }
+  ]
+}
